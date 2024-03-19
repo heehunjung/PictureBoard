@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjRefactoryApplication {
+public class ProjRefactorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjRefactoryApplication.class, args);
+		SpringApplication.run(ProjRefactorApplication.class, args);
 	}
-
 }
