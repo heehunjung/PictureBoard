@@ -51,7 +51,7 @@ public class ImageController {
         }
         return "redirect:/index";
     }
-    @GetMapping("/images/display/{id}")
+    @GetMapping("/images/display/{id}") //image 데이터를 변환해주는
     @ResponseBody
     public ResponseEntity<byte[]> displayImage(@PathVariable Long id) {
         Optional<Image> imageOptional = imageRepository.findById(id);
@@ -65,6 +65,18 @@ public class ImageController {
                     .body(imageData);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/viewer/{id}")
+    public String viewer(@PathVariable Long id,Model model){
+        Optional<Image> imageOptional = imageRepository.findById(id);
+        if(imageOptional.isPresent()){
+            Image image = imageOptional.get();
+            model.addAttribute("image",image);
+            return "viewer";
+        }
+        else{
+            return "index";
         }
     }
 }
