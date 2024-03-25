@@ -2,7 +2,6 @@ package com.example.Proj_Refactory.controller;
 
 import com.example.Proj_Refactory.domain.Image;
 import com.example.Proj_Refactory.repository.ImageRepository;
-import com.example.Proj_Refactory.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +27,11 @@ public class ImageController {
         model.addAttribute("images",images);
         return "index";
     }
-    @GetMapping("/upload")
+    @GetMapping("/upload") 
     public String upload(Model model){
         Image image = new Image();
         model.addAttribute("image",image);
+        System.out.println("get 메소드 upload 사용");
         return "/upload";
     }
     @PostMapping("/upload")
@@ -39,6 +39,7 @@ public class ImageController {
                               @RequestParam("data") MultipartFile file,
                               @RequestParam("content")String content){
         Image image = new Image();
+        System.out.println("upload로 들어감.");
         try{
             image.setContent(content);
             image.setTitle(title);
@@ -47,7 +48,36 @@ public class ImageController {
             image.setMimeType(file.getContentType()); // MIME 타입 설정
             imageRepository.save(image);
         }catch(IOException e){
+            System.out.println("IOException error");
             e.printStackTrace();
+        }
+        return "redirect:/index";
+    }
+    @PostMapping("upload/{id}")
+    public String fix(@PathVariable Long id,
+                      @RequestParam("title")String title,
+                      @RequestParam("data")MultipartFile file,
+                      @RequestParam("content")String content){
+        Optional<Image> imageOptional = imageRepository.findById(id);
+        System.out.println("upload fix 제대로 들어감.");
+        if (imageOptional.isPresent()) {
+            try {
+                Image image = imageOptional.get();
+                image.setContent(content);
+                image.setTitle(title);
+                if (!file.isEmpty()) image.setData(file.getBytes());
+                image.setName(file.getOriginalFilename());
+                image.setMimeType(file.getContentType()); // MIME 타입 설정
+                imageRepository.save(image);
+            }
+            catch (IOException e) {
+                System.out.println("IOException error");
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println("fix error");
+            return "redirect:/index";
         }
         return "redirect:/index";
     }
@@ -77,6 +107,18 @@ public class ImageController {
         }
         else{
             return "index";
+        }
+    }
+    @GetMapping("/viewer/fix/{id}")
+    public String fixButton(@PathVariable Long id,Model model){
+        Optional<Image> imageOptional = imageRepository.findById(id);
+        if(imageOptional.isPresent()){
+            Image image = imageOptional.get();
+            model.addAttribute("image",image);
+            return "upload";
+        }
+        else{
+            return "viewer";
         }
     }
 }

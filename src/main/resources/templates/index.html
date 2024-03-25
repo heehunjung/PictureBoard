@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Image Board</title>
+	<style>
+		.image-item {
+            display: inline-block; /* 가로로 정렬되도록 설정 */
+            margin-right: 10px; /* 사진 간격을 조절 */
+        }
+	</style>
+</head>
+<body>
+<h1><b>Image Board</b></h1>
+<button onclick="location.href='/upload'">사진올리기</button>
+<br><br>
+<div class="image-item" th:each="image : ${images}">
+	<a th:href="@{'viewer/'+${image.id}}">
+		<img th:src="@{'/images/display/' + ${image.id}}" alt="Image"  style="width: 200px; height: 200px; object-fit: cover;">
+		<p th:text="${image.title}"></p>
+	</a>
+</div>
+</body>
+</html>
