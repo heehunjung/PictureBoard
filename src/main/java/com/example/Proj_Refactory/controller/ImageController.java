@@ -166,7 +166,11 @@ public class ImageController {
         Member member=new Member();
         if(memberService.checkUsername(username)){
             model.addAttribute("message","이미 있는 id 입니다.");
-            return "join"; // 회원가입 페이지로 리디렉션
+            return "join";
+        }
+        if(memberService.checkPerson(name,number)){
+            model.addAttribute("message","이미 가입한 사용자 입니다.");
+            return "join";
         }
         member.setUsername(username);
         member.setPassword(password);
