@@ -13,6 +13,7 @@
 <body>
 <h1><b>Image Board</b></h1>
 <button onclick="location.href='/upload'">사진올리기</button>
+<button onclick="location.href='/login'">로그인</button>
 <br><br>
 <div class="image-item" th:each="image : ${images}">
 	<a th:href="@{'viewer/'+${image.id}}">

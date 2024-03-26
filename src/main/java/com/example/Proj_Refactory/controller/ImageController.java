@@ -1,7 +1,9 @@
 package com.example.Proj_Refactory.controller;
 
 import com.example.Proj_Refactory.domain.Image;
+import com.example.Proj_Refactory.domain.Member;
 import com.example.Proj_Refactory.repository.ImageRepository;
+import com.example.Proj_Refactory.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ import java.util.Optional;
 @Controller
 public class ImageController {
     ImageRepository imageRepository;
+    MemberRepository memberRepository;
     @Autowired
-    public void ImageController(ImageRepository imageRepository){
+    public void ImageController(ImageRepository imageRepository,
+                                MemberRepository memberRepository){
         this.imageRepository = imageRepository;
+        this.memberRepository=memberRepository;
     }
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String start(Model model){
@@ -120,5 +125,31 @@ public class ImageController {
         else{
             return "viewer";
         }
+    }
+    @PostMapping("/viewer/delete/{id}")
+    public String delete(@PathVariable Long id){
+        Optional<Image> imageOptional = imageRepository.findById(id);
+        if(imageOptional.isPresent()){
+            Image image = imageOptional.get();
+            imageRepository.delete(image);
+            return "redirect:/index";
+        }
+        else{
+            System.out.println("delete 실패");
+            return "viewer";
+        }
+    }
+    @PostMapping("/login")
+    public String login(@RequestParam("username")String name,
+                        @RequestParam("password")Long password){
+        Member member=new Member();
+        member.setLoginId(name);
+        member.setPassword(password);
+        memberRepository.save(member);
+        return "redirect:/index";
+    }
+    @GetMapping("/login")
+    public String loginPage(){
+        return "login";
     }
 }
