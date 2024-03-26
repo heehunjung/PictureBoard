@@ -8,10 +8,28 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String loginId;
+    private String username;
 
     private Long password;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    private String name;
+    private Long number;
     public Long getId() {
         return id;
     }
@@ -21,11 +39,11 @@ public class Member {
     }
 
     public String getLoginId() {
-        return loginId;
+        return username;
     }
 
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getPassword() {

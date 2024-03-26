@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>회원가입 페이지</title>
     <style>
         body {
             display: flex;
@@ -11,7 +11,7 @@
             height: 100vh;
             flex-direction: column;
         }
-        .login-container {
+        .signup-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -42,16 +42,31 @@
     </style>
 </head>
 <body>
-<form method="post" action="/login">
-    <h1>로그인</h1>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = /*[[${message}]]*/ null;
+    if (message != null) {
+        alert(message);
+    }
+    /*]]>*/
+</script>
+
+<form method="post" action="/join">
+    <h1>회원가입</h1>
     <div class="form-field">
-        <input type="text" th:name="username" placeholder="아이디" required autofocus>
+        <input type="text" name="name" placeholder="이름" required autofocus>
     </div>
     <div class="form-field">
-        <input type="password" th:name="password" placeholder="비밀번호" required>
+        <input type="number" name="number" placeholder="전화번호" required>
     </div>
-    <button type="submit">로그인</button>
-    <button onclick="location.href='/join'">회원가입</button>
+    <div class="form-field">
+        <input type="text" name="username" placeholder="아이디" required>
+    </div>
+    <div class="form-field">
+        <input type="password" name="password" placeholder="비밀번호" required>
+    </div>
+    <button type="submit">가입하기</button>
+    <button onclick="location.href='/login'">로그인 페이지로</button>
 </form>
 </body>
 </html>

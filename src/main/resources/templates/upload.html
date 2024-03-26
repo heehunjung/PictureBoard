@@ -3,16 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload Image</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type=text], textarea, input[type=file] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <h1>Upload Image</h1><hr>
 <form method="post"  th:action="@{${image.id} != null ? '/upload/' + ${image.id} : '/upload'}" enctype="multipart/form-data">
-    <input type="text" name="title" maxlength="20" placeholder="Enter title(최대 20자)" th:value="${image.title}" required>
-    <br><br>
-    <textarea name="content" rows="4" placeholder="comment(최대 100자)" required th:text="${image.content}" maxlength="100"></textarea>
-    <br><br>
+    <input type="text" name="title" maxlength="20" placeholder="Enter title (최대 20자)" th:value="${image.title}" required>
+    <br>
+    <textarea name="content" rows="4" placeholder="comment (최대 100자)" required th:text="${image.content}" maxlength="100"></textarea>
+    <br>
     <input type="file" name="data" accept="image/*">
-    <br><br>
+    <br>
     <input type="submit" value="Upload">
 </form>
 </body>
