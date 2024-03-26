@@ -146,12 +146,16 @@ public class ImageController {
     }
     @PostMapping("/login") //고쳐야됨
     public String login(@RequestParam("username")String name,
-                        @RequestParam("password")Long password){
-        Member member=new Member();
-        member.setUsername(name);
-        member.setPassword(password);
-        memberRepository.save(member);
-        return "redirect:/index";
+                        @RequestParam("password")Long password,
+                        Model model){
+        Optional<Member> memberOptional = memberRepository.findByUsernameAndPassword(name, password);
+        if(!memberOptional.isPresent()){
+            model.addAttribute("message","존재하지않은 회원정보입니다.");
+            return "/login";
+        }
+        else{
+            return "redirect:/index";
+        }
     }
     @GetMapping("/login")
     public String loginPage(){

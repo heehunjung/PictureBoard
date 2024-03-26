@@ -12,5 +12,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>{
     List<Member> findAllByOrderByIdDesc();
     Optional<Member> findByUsername(String username);
     public List<Member> findByName(String name);
+    Optional<Member> findByUsernameAndPassword(String username, Long password);
 
 }

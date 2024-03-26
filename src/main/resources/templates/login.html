@@ -42,6 +42,15 @@
     </style>
 </head>
 <body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = /*[[${message}]]*/ null;
+    if (message != null) {
+        alert(message);
+    }
+    /*]]>*/
+</script>
+
 <form method="post" action="/login">
     <h1>로그인</h1>
     <div class="form-field">
