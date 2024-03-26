@@ -4,6 +4,7 @@ import com.example.Proj_Refactory.domain.Image;
 import com.example.Proj_Refactory.domain.Member;
 import com.example.Proj_Refactory.repository.ImageRepository;
 import com.example.Proj_Refactory.repository.MemberRepository;
+import com.example.Proj_Refactory.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,11 +22,14 @@ import java.util.Optional;
 public class ImageController {
     ImageRepository imageRepository;
     MemberRepository memberRepository;
+    MemberService memberService;
     @Autowired
     public void ImageController(ImageRepository imageRepository,
-                                MemberRepository memberRepository){
+                                MemberRepository memberRepository,
+                                MemberService memberService){
         this.imageRepository = imageRepository;
-        this.memberRepository=memberRepository;
+        this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String start(Model model){
@@ -139,11 +144,11 @@ public class ImageController {
             return "viewer";
         }
     }
-    @PostMapping("/login")
+    @PostMapping("/login") //고쳐야됨
     public String login(@RequestParam("username")String name,
                         @RequestParam("password")Long password){
         Member member=new Member();
-        member.setLoginId(name);
+        member.setUsername(name);
         member.setPassword(password);
         memberRepository.save(member);
         return "redirect:/index";
@@ -152,5 +157,26 @@ public class ImageController {
     public String loginPage(){
         return "login";
     }
+    @PostMapping("/join")
+    public String join(@RequestParam("username")String username,
+                       @RequestParam("password")Long password,
+                       @RequestParam("name")String name,
+                       @RequestParam("number")Long number,
+                       Model model){
+        Member member=new Member();
+        if(memberService.checkUsername(username)){
+            model.addAttribute("message","이미 있는 id 입니다.");
+            return "join"; // 회원가입 페이지로 리디렉션
+        }
+        member.setUsername(username);
+        member.setPassword(password);
+        member.setNumber(number);
+        member.setName(name);
+        memberRepository.save(member);
+        return "redirect:/login";
+    }
+    @GetMapping("/join")
+    public String joinPage(){
+        return "join";
+    }
 }
-@@@@@@@@@test

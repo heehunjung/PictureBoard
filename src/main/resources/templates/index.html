@@ -4,22 +4,64 @@
 	<meta charset="UTF-8">
 	<title>Image Board</title>
 	<style>
-		.image-item {
-            display: inline-block; /* 가로로 정렬되도록 설정 */
-            margin-right: 10px; /* 사진 간격을 조절 */
+		body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .image-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .image-item img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .image-item p {
+            margin-top: 5px;
+            color: #333;
         }
 	</style>
 </head>
 <body>
 <h1><b>Image Board</b></h1>
-<button onclick="location.href='/upload'">사진올리기</button>
-<button onclick="location.href='/login'">로그인</button>
-<br><br>
-<div class="image-item" th:each="image : ${images}">
-	<a th:href="@{'viewer/'+${image.id}}">
-		<img th:src="@{'/images/display/' + ${image.id}}" alt="Image"  style="width: 200px; height: 200px; object-fit: cover;">
-		<p th:text="${image.title}"></p>
-	</a>
+<div>
+	<button onclick="location.href='/upload'">사진올리기</button>
+	<button onclick="location.href='/login'">로그인</button>
+</div>
+<div class="image-gallery">
+	<div class="image-item" th:each="image : ${images}">
+		<a th:href="@{'viewer/'+${image.id}}">
+			<img th:src="@{'/images/display/' + ${image.id}}" alt="Image">
+			<p th:text="${image.title}"></p>
+		</a>
+	</div>
 </div>
 </body>
 </html>

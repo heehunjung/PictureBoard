@@ -3,17 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Viewer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .image-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .action-buttons form {
+            display: inline;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1><B>Image Viewer</B></h1>
+<h1><b>Image Viewer</b></h1>
 
-<div>
-    <img th:src="@{'/images/display/' + ${image.id}}" alt="Image"  style="width: 200px; height: 200px; object-fit: cover;">
-    <p>Title</p> <span th:text="${image.title}"></span><p></p>
-    <p>Content</p><p> <span th:text="${image.content}"></span></p>
+<div class="image-container">
+    <img th:src="@{'/images/display/' + ${image.id}}" alt="Image">
+    <p>Title: <span th:text="${image.title}"></span></p>
+    <p>Content: <span th:text="${image.content}"></span></p>
 </div>
 
-<div>
+<div class="action-buttons">
     <form method="post" th:action="@{/viewer/delete/{id}(id=${image.id})}">
         <input type="submit" value="삭제">
     </form>
